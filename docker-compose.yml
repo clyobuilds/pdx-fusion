@@ -1,0 +1,15 @@
+services:
+  gancio:
+    # Official image is cisti/gancio:beta. We build from ./gancio-src (branch with small patches) instead.
+    build:
+      context: ./gancio-src
+      dockerfile: ../Dockerfile.gancio   # copy of Gancio's Dockerfile minus a buildx-only flag
+      target: prod
+    image: pdxfusion-gancio:local
+    container_name: pdxfusion-gancio
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:13120:13120"   # only reachable from this Mac
+    env_file: .env
+    volumes:
+      - ./data:/app/data           # database, uploads, logs, settings

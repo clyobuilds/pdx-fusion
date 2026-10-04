@@ -1,0 +1,215 @@
+/* PDX FUSION: look and feel.
+   Direction: clean, minimal, lo-fi, a little fluid and organic. Simple and warm, not fancy.
+   Colors are NOT here: they are Gancio's theme color settings (see design/apply.py, PALETTE).
+   Apply changes with: python3 design/apply.py */
+
+/*FONTS*/
+
+:root {
+  --pdx-radius: 18px;
+  --pdx-radius-small: 12px;
+  --pdx-font: 'Atkinson Hyperlegible', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ---------- Type: one highly legible font, comfortable size ---------- */
+html:root { font-size: 18px !important; }
+.v-application,
+.v-application *:not(.v-icon):not([class*="mdi-"]) {
+  font-family: var(--pdx-font) !important;
+}
+.v-application { line-height: 1.55; letter-spacing: 0; hyphens: manual !important; }
+.v-application * { hyphens: manual !important; }
+.v-application .text-body-1, .v-application .text-body-2 { line-height: 1.55; }
+/* Gancio sets thin weights in places; keep text sturdy */
+.font-weight-light { font-weight: 400 !important; }
+
+/* ---------- Header icons and calendar details: strong contrast ---------- */
+nav#AppBar .v-btn--icon, nav#AppBar .v-btn--icon .v-icon { color: rgb(var(--v-theme-on-surface)) !important; opacity: 1 !important; }
+.vc-container, .vc-title, .vc-day-content, .vc-nav-title { color: rgb(var(--v-theme-on-surface)) !important; }
+.vc-weekday { color: rgba(var(--v-theme-on-surface), 0.8) !important; font-weight: 700; }
+.vc-arrows-container .vc-arrow { color: rgb(var(--v-theme-on-surface)) !important; }
+.vc-container * { --vc-highlight-outline-bg: transparent !important; }
+.vc-dot { background-color: rgb(var(--v-theme-secondary)) !important; }
+
+/* ---------- Keyboard focus is always clearly visible ---------- */
+:focus-visible {
+  outline: 3px solid rgb(var(--v-theme-primary)) !important;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+/* the description box: draw the focus ring inside the box, so it never covers the formatting buttons above it */
+.v-editor .tiptap:focus-visible { outline-offset: -3px; border-radius: 12px; }
+.v-editor .editor-menu-bar { margin-bottom: 8px; }
+
+/* text fields already show focus with their own underline */
+.v-field input:focus-visible, .v-field textarea:focus-visible, .v-field__input:focus-visible { outline: none !important; }
+
+/* placeholders and hints must be readable too */
+/* Only where Vuetify shows them: a field with a label hides its placeholder until you click into it (showing it
+   earlier made the placeholder overlap the label, e.g. 'From address name' in Admin -> E-mail) */
+.v-field--active input::placeholder, .v-field--active textarea::placeholder,
+.v-field--no-label input::placeholder, .v-field--no-label textarea::placeholder {
+  color: rgba(var(--v-theme-on-surface), 0.7) !important;
+  opacity: 1 !important;
+}
+
+/* ---------- Header: calm, no busy picture, our own title ---------- */
+nav#AppBar,
+.v-theme--light nav#AppBar {
+  background-image: none !important;
+  background-color: transparent !important;
+}
+/* hide the stock Gancio logo (this is not a Gancio-branded site) */
+nav#AppBar .v-btn:has(img[src="/logo.png"]) { display: none; }
+#title {
+  font-size: clamp(2.1rem, 8vw, 3rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em;
+  word-break: normal !important;
+  line-height: 1.1;
+}
+nav#AppBar .text-body-1 { font-size: 1.05rem !important; opacity: 0.9; }
+
+/* the one wavy divider: under the header */
+nav#AppBar::after {
+  content: '';
+  display: block;
+  height: 16px;
+  margin: 26px auto 22px;
+  max-width: 680px;
+  background: rgb(var(--v-theme-primary));
+  opacity: 0.6;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='16' viewBox='0 0 64 16'%3E%3Cpath d='M0 8 Q16 -1 32 8 T64 8' fill='none' stroke='black' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") round no-repeat center / 64px 16px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='16' viewBox='0 0 64 16'%3E%3Cpath d='M0 8 Q16 -1 32 8 T64 8' fill='none' stroke='black' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E") round no-repeat center / 64px 16px;
+}
+
+/* ---------- Soft, rounded shapes ---------- */
+.v-card,
+.event,
+.vc-container,
+.v-dialog > .v-overlay__content > .v-card,
+.v-menu > .v-overlay__content,
+.v-alert,
+.v-snackbar__wrapper {
+  border-radius: var(--pdx-radius) !important;
+}
+.v-field { border-radius: var(--pdx-radius-small) !important; }
+.v-btn:not(.v-btn--icon) { border-radius: 6px !important; letter-spacing: 0.04em; font-weight: 700; }
+.v-chip { border-radius: 999px !important; }
+.vc-container { overflow: hidden; }
+.vc-weeks { min-height: 0 !important; }
+/* months that need only 5 rows should not show an empty 6th row */
+.vc-week:not(:has(.vc-day:not(.is-not-in-month))) { display: none; }
+.bg-transparent-semi { background: rgb(var(--v-theme-surface)) !important; }
+
+/* ---------- Cards: quiet, paper-like ---------- */
+.v-theme--light .v-card,
+.v-theme--light .event {
+  background-color: rgb(var(--v-theme-surface)) !important;
+  border: 1px solid rgba(42, 37, 33, 0.14) !important;
+  box-shadow: 0 1px 2px rgba(42, 37, 33, 0.06);
+}
+.v-theme--dark .v-card,
+.v-theme--dark .event {
+  background-color: rgb(var(--v-theme-surface)) !important;
+  border: 1px solid rgba(241, 235, 227, 0.14) !important;
+}
+.vc-container { --vc-bg: rgb(var(--v-theme-surface)) !important; --vc-border: rgba(128, 118, 108, 0.35) !important; }
+.v-footer { background-color: transparent !important; border-top: 1px solid rgba(128, 118, 108, 0.3) !important; }
+
+/* ---------- Home buttons: plain text buttons, like Gancio's own ---------- */
+#navbar .v-btn[href="/add"], #navbar .v-btn[href="/export"] {
+  background: transparent !important;
+  color: rgb(var(--v-theme-on-surface)) !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+#navbar .v-btn[href="/add"] .v-icon { color: rgb(var(--v-theme-primary)) !important; opacity: 1; }
+#navbar .v-btn[href="/export"] .v-icon { color: inherit !important; opacity: 1; }
+
+/* ---------- Home list: compact cards (small flyer beside the details), so repeats stay short ---------- */
+#home .event { min-height: 112px; }
+#home .event > .event-card { flex: 1; }
+#home .event-card {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  grid-template-areas: "img title" "img meta" "img .";
+  grid-template-rows: auto auto 1fr;
+  align-content: start;
+  column-gap: 14px;
+  align-items: start;
+  padding: 12px;
+}
+#home .event-card > a { display: contents; }
+#home .event-card .img.thumb {
+  grid-area: img;
+  width: 96px; height: 96px;
+  border-radius: var(--pdx-radius-small);
+  overflow: hidden;
+}
+#home .event-card .img.thumb img { width: 100% !important; height: 100% !important; max-height: none !important; object-fit: cover; }
+#home .event-card .event-title {
+  grid-area: title;
+  margin: 0 48px 4px 0 !important;
+  font-size: 1.2rem !important;
+  line-height: 1.25 !important;
+  -webkit-line-clamp: 2 !important; line-clamp: 2 !important;
+}
+#home .event-card .v-card-text { grid-area: meta; padding: 0 !important; }
+#home .event-card .v-card-text .v-icon { font-size: 1.1rem; }
+#home .event-card > a > .v-icon { position: absolute; top: 14px; right: 54px; margin: 0 !important; float: none; }
+.event-card .share-button { width: 48px !important; height: 48px !important; top: 2px !important; right: 2px !important; margin: 0 !important; color: rgb(var(--v-theme-on-surface)) !important; opacity: 1; }
+@media (min-width: 600px) {
+  #home .event-card { grid-template-columns: 128px 1fr; }
+  #home .event-card .img.thumb { width: 128px; height: 128px; }
+}
+
+/* ---------- Big, easy tap targets (phones first) ---------- */
+.v-btn:not(.v-btn--icon) { min-height: 48px; padding-inline: 20px; }
+.v-btn--icon { min-width: 48px; min-height: 48px; }
+.v-field__input { min-height: 54px; font-size: 1rem; }
+.v-field--variant-underlined .v-field__input, .v-field--variant-plain .v-field__input { padding-top: 14px; }
+.v-selection-control { min-height: 48px; }
+.v-list-item { min-height: 52px; }
+.v-footer .v-btn { min-height: 44px; }
+.vc-day { min-height: 44px; }
+.vc-day-content { width: 36px; height: 36px; font-size: 1rem; }
+.v-label, .v-field-label { font-size: 1rem; opacity: 1 !important; }
+.v-messages, .v-messages__message { font-size: 0.9rem; opacity: 0.9; line-height: 1.35 !important; min-height: 0; }
+.v-input__details { min-height: 22px; padding-top: 4px; }
+
+/* ---------- No motion effects (no hover lift on anything) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Event page: the flyer must not push the details off a phone screen ---------- */
+.img:not(.thumb) img {
+  max-height: 55vh !important;
+  width: auto !important;
+  max-width: 100% !important;
+  margin-inline: auto;
+  display: block;
+  object-fit: contain;
+  border-radius: var(--pdx-radius);
+}
+
+/* ---------- Month headings in the home list ---------- */
+.month-heading {
+  text-align: center;
+  margin: 28px 0 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgb(var(--v-theme-primary));
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+}
+#home .events > .month-heading:first-child { margin-top: 8px; }

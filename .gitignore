@@ -1,0 +1,12 @@
+# private: never publish
+.env
+data/
+backups/
+.backup-tmp/
+*.log
+build.log
+# local-only
+design/screenshots/
+.DS_Store
+# the Gancio source lives in its own repository (added as a submodule at publish time)
+gancio-src/

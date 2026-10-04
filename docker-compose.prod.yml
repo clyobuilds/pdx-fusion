@@ -1,0 +1,35 @@
+# Production (on the server). Local development uses docker-compose.yml instead.
+# Caddy (open source) gets and renews the HTTPS certificate by itself and passes visitors on to Gancio.
+services:
+  gancio:
+    build:
+      context: ./gancio-src
+      dockerfile: ../Dockerfile.gancio
+      target: prod
+    image: pdxfusion-gancio:local
+    container_name: pdxfusion-gancio
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+    expose:
+      - "13120"            # only reachable by Caddy, not from the internet directly
+
+  caddy:
+    image: caddy:2
+    container_name: pdxfusion-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - DOMAIN=${DOMAIN}
+      - INDEXING=${INDEXING:-noindex}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data   # keeps the certificate
+    depends_on:
+      - gancio
+
+volumes:
+  caddy_data:

@@ -1,0 +1,38 @@
+# Two modes, chosen with INDEXING in .env:
+#   INDEXING=noindex  during testing: tells search engines to stay away
+#   INDEXING=index    at launch: lets search engines in, and points them at the sitemap
+(noindex) {
+	header X-Robots-Tag "noindex, nofollow, noarchive"
+	respond /robots.txt 200 {
+		body "User-agent: *
+Disallow: /
+"
+		close
+	}
+}
+
+(index) {
+	respond /robots.txt 200 {
+		body "User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /add
+Disallow: /login
+Disallow: /register
+Disallow: /recover
+Disallow: /settings
+Disallow: /my_events
+Disallow: /export
+
+Sitemap: https://{$DOMAIN}/sitemap.xml
+"
+		close
+	}
+}
+
+{$DOMAIN} {
+	encode gzip zstd
+	import {$INDEXING:noindex}
+	reverse_proxy gancio:13120
+}

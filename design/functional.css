@@ -1,0 +1,98 @@
+/* FUNCTIONAL fixes (layout/behaviour). Not about looks. Edit design/theme.css for looks. */
+/* Narrow add-event form on desktop (Gancio sets max-width inline, so !important is needed) */
+.v-container:has(> .v-card .v-form) { max-width: 640px !important; }
+.v-container:has(> .v-card .v-form) .v-container { max-width: 100% !important; }
+
+/* Add-event form: invite link gets its own full-width row; address fills the space beside the location */
+.v-col-md-3:has(.mdi-link) { flex: 0 0 100% !important; max-width: 100% !important; }
+.v-col-md-5:has(.mdi-map) { flex: 1 1 0 !important; max-width: none !important; }
+
+/* The 'show repeating events' switch is hidden: repeating events are always shown */
+.v-switch:has(#show_recurrent_switch) { display: none !important; }
+
+/* Event type tabs (All / Socials / Lessons / Workshops) line up with the list below them */
+#category-tabs { max-width: 680px; margin-inline: auto; }
+#category-tabs .v-tab { min-width: 0; padding-inline: 6px; letter-spacing: normal; font-size: 0.8125rem; }
+
+/* Phones: hover labels (tooltips) stay on screen after a tap and jitter while scrolling. Touch screens have no hover, so no labels. */
+@media (hover: none) { .v-tooltip { display: none !important; } }
+
+/* Home page: one vertical list of event cards, in date order, instead of a grid */
+#home .events { flex-direction: column; flex-wrap: nowrap; align-items: stretch; max-width: 680px; }
+#home .events > .event { flex: 0 0 auto; max-width: none; width: 100%; }
+
+/* Add-event form: keep the 'Show preview' switch label on one line */
+.v-card-actions .v-switch { flex: 0 0 auto !important; }
+.v-switch .v-label { white-space: nowrap; }
+
+/* No visitor accounts: the login icon is hidden. Moderators/admins are given the address /login directly. */
+nav#AppBar .v-btn[href="/login"] { display: none !important; }
+
+/* Button groups in the add-event form (Normal / Multiple days / Recurring, how often it repeats, which day of the
+   month): Gancio gives the group a fixed height and clips what does not fit, so on a phone choices were hidden
+   (even 'Recurring', and 'Each third Tuesday of the month'). Let them grow, wrap, and show every choice. */
+.v-btn-toggle:not(.editor-menu-bar .v-btn-toggle) {
+  height: auto !important;
+  max-width: 100%;
+  flex-wrap: wrap !important;
+  justify-content: center;
+  gap: 8px;
+  border: 0 !important;
+}
+.v-btn-toggle:not(.editor-menu-bar .v-btn-toggle) > .v-btn {
+  flex: 0 1 auto;
+  height: auto !important;
+  min-height: 48px;
+  padding-block: 8px;
+  white-space: normal !important;
+  text-align: center;
+  border: thin solid currentColor !important;
+  border-radius: 4px !important;
+}
+.v-btn-toggle:not(.editor-menu-bar .v-btn-toggle) > .v-btn .v-btn__content { white-space: normal; }
+/* the 'how often' group is also a half-width column in Gancio: let it use the whole width, so the choices share a row */
+.v-btn-toggle.v-col-6 { flex: 0 1 auto !important; width: auto !important; max-width: 100% !important; }
+@media (max-width: 599px) {
+  /* stacked choices use the full width, so they are easy to tap */
+  .v-btn-toggle.flex-column > .v-btn { flex: 1 1 100%; }
+}
+
+/* The text-formatting buttons above the description are Gancio's own toggle group: leave them at their natural size. */
+.editor-menu-bar .v-btn-toggle { height: auto; flex-wrap: wrap; gap: 4px; }
+
+/* 'How often' and 'which day' choices: smaller, soft pills with no outline, so they read as secondary to the
+   Normal / Multiple days / Recurring boxes above them. The chosen one is filled. */
+.v-btn-toggle.frequency-toggle { gap: 6px; }
+.v-btn-toggle.frequency-toggle.frequency-toggle > .v-btn.v-btn {
+  min-height: 32px;
+  padding: 2px 14px;
+  font-size: 0.8125rem;
+  letter-spacing: normal;
+  text-transform: none;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: rgba(var(--v-theme-on-surface), 0.08);
+}
+.v-btn-toggle.frequency-toggle.frequency-toggle > .v-btn.v-btn.v-btn--active {
+  background: rgb(var(--v-theme-primary));
+  color: rgb(var(--v-theme-background));
+}
+
+/* 'Repeats with no end' / 'Ends on a date': centered on the page */
+.v-radio-group .v-selection-control-group { justify-content: center; }
+
+/* Choosing 'Each month' adds a row of choices under the calendar. Keep room for that row always, and keep the
+   choices in a wrapping row (not a column), so nothing below jumps when the frequency changes. */
+.pattern-slot { min-height: 40px; }
+.v-btn-toggle.frequency-toggle.frequency-toggle { flex-direction: row !important; }
+
+/* About page: space between sections, and links that look like links */
+.v-container > span > h2 { margin: 0.5rem 0 1rem; }
+.v-container > span > h3 { margin: 2.25rem 0 0.75rem; }
+.v-container > span > p { margin: 0 0 1rem; line-height: 1.6; }
+.v-container > span a { color: rgb(var(--v-theme-primary)); text-decoration: underline; text-underline-offset: 3px; }
+/* phones: the month choices wrap onto two rows, so keep two rows free once 'Each month' is chosen */
+@media (max-width: 599px) { .pattern-slot:has(.v-btn-toggle) { min-height: 76px; } }
+
+/* Venue page map: tapping it opens the visitor's maps app, so the zoom buttons (which the tap would cover) are hidden */
+#home .leaflet-control-zoom { display: none; }
