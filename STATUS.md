@@ -40,3 +40,10 @@ Changes to `gancio-src/` need the rebuild. The server address and login are not 
 - Repeating events are created 4 months ahead; a skipped date stays skipped; "Remove" under "Recurring event actions" deletes the whole series.
 - Favorites are stored in the visitor's browser only.
 - Days in the calendar are cut in the visitor's own time zone (Gancio behavior).
+
+## Running Gancio's tests (before deploying a source change)
+Copy `gancio-src/` (without `node_modules`) to a scratch folder under your home folder, then:
+    docker run --rm -v "$PWD:/app" -w /app node:24-alpine sh -c "apk add --no-cache git coreutils jq; corepack enable; pnpm install --frozen-lockfile; npx vitest run"
+Run the whole suite (`npx vitest run`), not one file: the unit tests rely on the API part to create the test database. Last result: 186 passed.
+Browser checks: `design/shoot.sh` and `design/phonecheck.sh` run a headless browser in Docker; scripts must live under your home folder (the Docker VM only sees it)
+and reach the local site at `http://gancio:13120` on the `pdx-fusion_default` network.
