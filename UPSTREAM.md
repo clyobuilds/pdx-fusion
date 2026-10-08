@@ -42,14 +42,16 @@ Gancio's code lives in `gancio-src/` (a git clone of https://framagit.org/les/ga
 3. Once a fix is merged and released upstream, delete that branch here and rebuild.
 
 ## Updating Gancio later
+**Do not rebuild the `pdxfusion` branch from a list of branches** (older instructions did): later work was committed directly on
+`pdxfusion` (for example the 4-month horizon, the day-list fix, the favorites merge), so a reset would lose it. Instead bring the new
+upstream code into `pdxfusion` and resolve any conflicts:
     cd gancio-src
-    git fetch origin && git checkout main && git pull
-    git checkout pdxfusion && git reset --hard main
-    git merge time-select-dropdown calendar-today-button card-share-button home-month-headings recurrent-until event-form-fixes   # contains recurrent-horizon, fix-recurrent-generation, fix-recurrent-type-optional
-    git merge fix-show-recurrent-default   # conflicts in tests/unit/Recurrent.test.ts: keep both tests
-    # (recurrent-horizon already contains fix-recurrent-generation; rebase it on main if main moved)
+    git fetch origin
+    git checkout pdxfusion
+    git merge origin/main        # conflicts are most likely in tests/unit/Recurrent.test.ts, app/pages/index.vue, app/pages/add/[[eventId]].vue
+    # then run the test suite (see DECISIONS.md: throwaway container, `npx vitest run`), rebuild, and compare local vs live with design/audit.py
     cd .. && docker-compose build && docker-compose up -d
-If no patch branches remain, switch `docker-compose.yml` back to `image: cisti/gancio:beta`.
+Back up first (live: `./backup.sh`; local: copy `data/gancio.sqlite`). If no patch is left, `docker-compose.yml` can go back to `image: cisti/gancio:beta`.
 
 ## After any change to Gancio's English text (`i18n/locales/en.json`)
 `data/user_locale/en.json` overrides whole sections (`event`, `login`, `common`), so it must be regenerated
