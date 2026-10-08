@@ -96,3 +96,12 @@ nav#AppBar .v-btn[href="/login"] { display: none !important; }
 
 /* Venue page map: tapping it opens the visitor's maps app, so the zoom buttons (which the tap would cover) are hidden */
 #home .leaflet-control-zoom { display: none; }
+
+/* Event page: the address is indented to line up under the venue name (past the pin icon), so it reads as that venue's address */
+.eventDetails .p-location > .d-flex { padding-left: 31px; }
+
+/* Favorites: the star sits left of the share button on a card; the title keeps clear of both buttons */
+.event-card .favorite-button { right: 2.75rem; }
+.event-card .event-title { margin-right: 5.5rem; }
+/* favorited events that are over: greyed out (they are listed below the upcoming ones) */
+#home .event-past { opacity: 0.5; filter: grayscale(1); }

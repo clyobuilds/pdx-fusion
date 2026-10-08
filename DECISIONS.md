@@ -278,3 +278,47 @@
   elsewhere; `app/composables/useMapLink.ts`). Venues without saved coordinates get them looked up from the address when the page
   opens (not saved). Zoom buttons hidden there (functional.css).
 - Local DB backup before the migration: `data/gancio.sqlite.bak-before-cost`. NOT deployed to pdx.hmu.click yet.
+- Cost field / copy address / venue map link deployed to pdx.hmu.click 2026-10-04 (live backup first: `~/pdxfusion-live-backups/*-before-cost.tar.gz`).
+  I had built it locally and not deployed it when the user first looked for it on the live site.
+- Git identity: commits in `gancio-src/` and the top-level repo are authored as `clyobuilds <297059659+clyobuilds@users.noreply.github.com>`
+  (set per-repo; the Mac's global git name/email is left alone). Earlier local commits were rewritten to remove the personal name/email.
+  Nothing is published yet; the GitHub repos wait for the final domain. rsync now also excludes `gancio-src/.git`.
+- Event page: address indented under the venue name (functional.css), deployed live (design-only: rsync design/ + apply.py).
+
+## Copy from an existing event
+- Branch `copy-from-existing-event`. Optional search box at the top of the add form (`EventCopyPicker.vue`): finds visible past and
+  upcoming events by title or venue (a series is listed once); picking one opens `/add?copy=ID` filled in. Works for visitors without
+  an account (it only uses public events). Dates are cleared; a series keeps only its frequency; the flyer is NOT copied.
+- Why no flyer: the server only accepts a web address for `image_url`; stored flyers are file names, so Gancio's admin "Clone" has
+  silently dropped the flyer all along. Reusing the file would need a source change plus care about deleting the original.
+- Found (Gancio bug, not patched): `/api/events` with BOTH a text `query` and `max` returns 500 ("no such column: name"; the venue-name
+  filter runs before the places join). The picker avoids `max`. Worth reporting upstream.
+- To skip one date of a repeating event: open that date's page as admin/editor -> "Skip" (hides only that date; it is not recreated).
+  "Remove" under "Recurring event actions" deletes the WHOLE series.
+
+## 4-month horizon, day list fix, picker moved
+- Repeating events now exist and show 4 months ahead instead of 6 (`shared/utils/recurrentHorizon.ts`, used by the server generator and the
+  home page). Dates already created beyond 4 months are not deleted (that could re-create dates an admin skipped); the home list and
+  calendar hide them until they come within 4 months. The two tests that assumed 6 months were updated; full suite: 186 passed.
+- Home page, clicking a day: a day lists events that START that day. An event running past midnight (or ending exactly at midnight) no
+  longer appears on the next day. Events lasting 24 h or more (festivals) still appear on every day they cover. Calendar dots were already by start day.
+  NOTE: days are cut in the visitor's browser time zone (Gancio behavior), so a visitor outside Pacific time can see a day shifted.
+- "Start from an existing event" now sits above the form box (not inside it); label shortened, no "(optional)".
+
+## Home reset, picker lists repeating series, copy never repeats
+- Clicking the site title or the footer Home link now acts like a refresh of the home page (selected day, search and browsed month are
+  forgotten): `useGoHome.ts`. A browser refresh already reset the day (tested).
+- "Start from an existing event" now finds repeating series: it passes `include_parent` (the earlier `show_recurrent=false` alone hid every
+  series, because Gancio's "no repeating events" excludes both the series and its dates). A series is listed once, by its first date.
+- A copy never carries a repeat setting. Before, it kept the weekly frequency and opened as "Recurring", which made a one-time copy repeat
+  weekly (live example: "Inspire Fusion", Oct 17, created as a weekly series; 25 later dates were generated).
+- Cleaning up a series made by mistake: edit the series, set "Ends on a date" to its first day (removes all later dates), or copy it as a
+  Normal event and use "Remove" under "Recurring event actions" on the old one.
+
+## Favorites (merged into pdxfusion, deployed 2026-10-07)
+- Branch `favorites` in gancio-src. A star on each event card (left of Share) and a "Favorite" row above Share on the event page. Favorites are
+  event ids in the browser's localStorage (`pdxFavorites`), no account; they do not follow the person to another browser or device.
+- "Favorites" tab (star icon, plus the word on wider screens) after Workshops: fetches each favorited event by id, so events that have ended
+  and are no longer in the home list still appear. Upcoming first (soonest first); ended ones below under "Past Events", greyed out.
+- Each date of a repeating event is its own favorite (a favorite is one date, not the series).
+- Deleted or hidden events simply drop out of the tab (their ids stay in storage, harmless).

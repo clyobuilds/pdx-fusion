@@ -54,3 +54,9 @@ If no patch branches remain, switch `docker-compose.yml` back to `image: cisti/g
 ## After any change to Gancio's English text (`i18n/locales/en.json`)
 `data/user_locale/en.json` overrides whole sections (`event`, `login`, `common`), so it must be regenerated
 from the new `en.json` with our four edits re-applied (see DECISIONS.md), otherwise new labels show as raw keys.
+
+## Found while building PDX Fusion (not patched, worth reporting)
+- `GET /api/events?query=...&max=...` returns a server error (500, "no such column: name") when a text query is combined with a result
+  limit: the venue-name part of the search runs inside the limited sub-query before the places table is joined. Without `max` it works.
+- The admin "Clone" button (and any form that sets `image_url` to a stored flyer's file name) silently drops the flyer, because the server
+  only accepts `http(s)://` addresses for `image_url`, while stored flyers are file names.

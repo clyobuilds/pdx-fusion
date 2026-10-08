@@ -8,6 +8,7 @@ It is a customized copy of [Gancio](https://gancio.org), an open-source events c
   Clone everything with `git clone --recurse-submodules <this repo's URL>`.
 - **License:** AGPL-3.0 (see `LICENSE`), the same as Gancio. Anyone who uses the site can get its source.
 - **Want to help?** See `CONTRIBUTING.md`.
+- **Picking the project up again?** Read `STATUS.md` first (current state, how to deploy, open items).
 
 ---
 
