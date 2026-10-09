@@ -95,10 +95,16 @@ def font_faces() -> str:
     return "/* Atkinson Hyperlegible Next (Braille Institute / Applied Design Works), SIL Open Font License, see design/fonts/OFL-license.txt */\n" + "\n".join(faces)
 
 
+def header_image() -> str:
+    """The site name picture (made by design/make_header.py), as a data address for the CSS."""
+    data = base64.b64encode((DESIGN / "header-title.webp").read_bytes()).decode()
+    return f"data:image/webp;base64,{data}"
+
+
 def main():
     if not DB.exists():
         raise SystemExit("No database yet. Start the site once first (docker-compose up -d), then run this again.")
-    css = (DESIGN / "functional.css").read_text() + "\n" + (DESIGN / "theme.css").read_text().replace("/*FONTS*/", font_faces())
+    css = (DESIGN / "functional.css").read_text() + "\n" + (DESIGN / "theme.css").read_text().replace("/*FONTS*/", font_faces()).replace("/*HEADER_IMAGE*/", header_image())
     settings = {
         "custom_css": css,
         "custom_js": (DESIGN / "functional.js").read_text(),

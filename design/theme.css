@@ -61,12 +61,17 @@ nav#AppBar,
 }
 /* hide the stock Gancio logo (this is not a Gancio-branded site) */
 nav#AppBar .v-btn:has(img[src="/logo.png"]) { display: none; }
+/* the site name is the neon logo picture (design/header-title.webp, embedded by apply.py); the text stays in the
+   page for search engines and screen readers, only hidden on screen */
 #title {
-  font-size: clamp(2.1rem, 8vw, 3rem) !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.08em;
-  word-break: normal !important;
-  line-height: 1.1;
+  display: block;
+  width: min(88vw, 620px);
+  aspect-ratio: 1200 / 567;
+  margin: 0 auto;
+  background: url(/*HEADER_IMAGE*/) center / contain no-repeat;
+  text-indent: -9999px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 nav#AppBar .text-body-1 { font-size: 1.05rem !important; opacity: 0.9; }
 
