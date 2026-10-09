@@ -41,8 +41,8 @@
 ## Feedback
 - No built-in general feedback form in Gancio (only per-event "Report", which needs SMTP).
 - Footer links must be https:// (mailto breaks), so the feedback mailto link is in the About text.
-- **PLACEHOLDER:** `feedback@pdxfusion.example` is fake. Replace it in the About page (edit as admin)
-  once a real address exists.
+- **Contact address (decided 2026-10-08):** `hello@pdxfusiondance.com`, a Namecheap Private Email mailbox that forwards to all admins. It is
+  also the admin email and the sender for Gancio's SMTP. Replaced the old placeholder in `design/about.html`, `DEPLOY.md`, `STATUS.md`.
 
 ## Round 4
 - `recurrent_event_visible` = true (repeating events shown by default). Note: Gancio's checkbox *adds*

@@ -26,9 +26,9 @@ Changes to `gancio-src/` need the rebuild. The server address and login are not 
 ## Open items
 Do these when the **final domain** is chosen (they depend on it):
 1. **Move the site to the domain** - DNS at the registrar -> server, change `DOMAIN`/`BASEURL` in the server's `.env`, `docker compose up -d` (`DEPLOY.md`, "Moving to ...").
-2. **Email** - create a mailbox on the domain. Then: Admin -> E-mail (SMTP) + admin email address (today NEITHER is set, so approval notifications and
-   password resets cannot send); replace the placeholder feedback address `feedback@pdxfusion.example` in the About page (edit it as admin, and in
-   `design/about.html`); switch the mail sender to the domain mailbox.
+2. **Email** - plan: Namecheap Private Email, one mailbox `hello@pdxfusiondance.com`, which forwards to every admin. Gancio sends as hello@ over
+   SMTP (`mail.privateemail.com`, port 465, SSL, full address + password). Admin -> E-mail (SMTP) and admin email = hello@ (today NEITHER is set).
+   About page address is already changed in `design/about.html`; the LIVE About text must be edited in Admin. Not yet bought or set up.
 3. **Publish the code (AGPL-3.0 requires it)** - GitHub account `clyobuilds`, two public repositories (site files; Gancio source with our changes, linked as a
    submodule); `CONTRIBUTING.md` and `LICENSE` are written. Check `git log --all` shows only the no-reply identity first. Then add a footer
    "Source code" link on the site (Admin -> Settings -> footer links; none are set today) pointing to the repository, and mention the repository in the

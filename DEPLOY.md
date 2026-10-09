@@ -85,7 +85,7 @@ registration being off). Anything else: run step 7 again and re-check.
 - Turn **registration OFF**.
 - Check **moderation ON** and **anonymous events ON**.
 - Admin -> **SMTP**: enter your email sending details and use the test button.
-- Edit the **About** page and replace the placeholder feedback address `feedback@pdxfusion.example`.
+- Edit the **About** page and replace the placeholder feedback address `hello@pdxfusiondance.com`.
 - Add your trusted organizers under Admin -> Users.
 
 ### 9. Backups (do this before launch)
