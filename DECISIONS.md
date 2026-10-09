@@ -322,3 +322,9 @@
   and are no longer in the home list still appear. Upcoming first (soonest first); ended ones below under "Past Events", greyed out.
 - Each date of a repeating event is its own favorite (a favorite is one date, not the series).
 - Deleted or hidden events simply drop out of the tab (their ids stay in storage, harmless).
+
+## Past Events archive, site name (local only, 2026-10-08)
+- New page `/past` (gancio-src branch `past-events`): every event that is over, newest first, 60 at a time with "Load more". The home list
+  ends with a "Past Events" button linking to it. Uses the existing `/api/events` with `older`, `reverse`, `start=now`.
+- Site name is now "PDX FUSION DANCE"; subtitle is "a community calendar for Portland's fusion dance scene" (lowercase "a", in `design/apply.py`).
+- Not deployed yet: both changes are on branches (`past-events` in each repo) until the user says "push to prod".
