@@ -1,6 +1,6 @@
 # PDX Fusion
 
-A community calendar for Portland's fusion dance scene, live at https://pdx.hmu.click (temporary address).
+A community calendar for Portland's fusion dance scene, live at https://pdxfusiondance.com. Source code (AGPL-3.0): https://github.com/clyobuilds/gancio-pdxfusion (Gancio with our changes).
 It is a customized copy of [Gancio](https://gancio.org), an open-source events calendar.
 
 - **This repository:** the look and feel, wording, deploy files and documentation (`design/`, `docker-compose*.yml`, `DEPLOY.md`, ...).

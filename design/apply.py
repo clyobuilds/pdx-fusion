@@ -71,6 +71,11 @@ SITE = {
     "enable_federation": False,   # no Mastodon / fediverse
     "allow_online_event": True,    # this is the 'Invite / RSVP link' field of the add-event form
     "allow_geolocation": True,     # address suggestions while typing (also a map on the event page)
+    "footerLinks": [      # Gancio's footer; /about and home first, then the public source code (AGPL-3.0)
+        {"href": "/", "label": "common.home"},
+        {"href": "/about", "label": "common.about"},
+        {"href": "https://github.com/clyobuilds/gancio-pdxfusion", "label": "Source code"},
+    ],
     "geocoding_provider": "https://photon.komoot.io/api/",   # Photon: made for search-as-you-type (public Nominatim forbids it)
 }
 
