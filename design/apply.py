@@ -62,8 +62,8 @@ PALETTE = {
 
 # Basic settings of the site (Gancio's defaults would be: Rome timezone, no recurring events, no moderation)
 SITE = {
-    "title": "PDX FUSION",
-    "description": "A community calendar for Portland's fusion dance scene",
+    "title": "PDX FUSION DANCE",
+    "description": "a community calendar for Portland's fusion dance scene",
     "instance_timezone": "America/Los_Angeles",
     "allow_recurrent_event": True,
     "enable_moderation": True,

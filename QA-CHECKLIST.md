@@ -3,7 +3,7 @@
 Start first: `colima start` then `docker-compose up -d` (see README.md). Hard-refresh (Cmd+Shift+R) after any change.
 
 ## 1. Look and wording
-- [ ] Home page shows "PDX FUSION" and the subtitle.
+- [ ] Home page shows "PDX FUSION DANCE" and the subtitle.
 - [ ] "Show repeating events" checkbox sits between the calendar and the event list; toggling it works.
 - [ ] Add event page is a narrow column; Location + Address share a row; **Invite / RSVP link is on its own row below**.
 - [ ] Login page says "Register" (not "Not registered?").
