@@ -71,6 +71,9 @@ SITE = {
     "enable_federation": False,   # no Mastodon / fediverse
     "allow_online_event": True,    # this is the 'Invite / RSVP link' field of the add-event form
     "allow_geolocation": True,     # address suggestions while typing (also a map on the event page)
+    "allow_event_without_end_time": False,  # an end time is required (the live site's choice)
+    "show_download_media": False,           # visitors cannot download flyers (the live site's choice)
+    "enable_report": True,                  # "Report event" button; reports email the admins (the live site's choice)
     "footerLinks": [      # Gancio's footer; /about and home first, then the public source code (AGPL-3.0)
         {"href": "/", "label": "common.home"},
         {"href": "/about", "label": "common.about"},
