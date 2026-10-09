@@ -65,7 +65,7 @@ nav#AppBar .v-btn:has(img[src="/logo.png"]) { display: none; }
    page for search engines and screen readers, only hidden on screen */
 #title {
   display: block;
-  width: min(86vw, 880px);
+  width: min(calc(100vw - 16px), 584px);   /* the same width as the calendar column */
   aspect-ratio: /*HEADER_ASPECT*/;
   margin: 0 auto;
   background: url(/*HEADER_IMAGE*/) center / contain no-repeat;
