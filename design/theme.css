@@ -75,10 +75,9 @@ nav#AppBar .v-btn:has(img[src="/logo.png"]) { display: none; }
 }
 /* light theme: the pale letters need a dark panel behind them (a panel, not a border) */
 .v-theme--light #title {
-  background-color: #1c1616;
+  background-color: #1c1616;          /* the panel is the calendar's width; the words sit 16px inside it */
+  background-size: calc(100% - 32px) auto;
   border-radius: 14px;
-  box-shadow: 0 0 0 16px #1c1616;   /* the dark margin around the words, without shrinking them */
-  margin: 16px auto;
 }
 nav#AppBar .text-body-1 { font-size: 1.05rem !important; opacity: 0.9; }
 
