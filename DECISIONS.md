@@ -328,3 +328,10 @@
   ends with a "Past Events" button linking to it. Uses the existing `/api/events` with `older`, `reverse`, `start=now`.
 - Site name is now "PDX FUSION DANCE"; subtitle is "a community calendar for Portland's fusion dance scene" (lowercase "a", in `design/apply.py`).
 - Not deployed yet: both changes are on branches (`past-events` in each repo) until the user says "push to prod".
+
+## Launch: pdxfusiondance.com (2026-10-09)
+- Site moved to https://pdxfusiondance.com (`.env` DOMAIN/BASEURL; Caddy issued the certificate). pdx.hmu.click is no longer served.
+- Deployed: Past Events archive, PDX FUSION DANCE title, canonical links, www redirect (Caddy), footer "Source code" link.
+- INDEXING=index: robots.txt opens the site to search engines; sitemap at /sitemap.xml. Backup of .env taken before each change (`.env.bak-*`).
+- Code published: github.com/clyobuilds/pdx-fusion (site files) and github.com/clyobuilds/gancio-pdxfusion (Gancio + our changes, AGPL-3.0).
+  Upstream history kept (Gancio's authors are in it); no personal names or addresses in either repo.

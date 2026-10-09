@@ -24,29 +24,16 @@ Design-only changes (CSS, wording, `design/`) need just the rsync of `design/` a
 Changes to `gancio-src/` need the rebuild. The server address and login are not stored in this repository.
 
 ## Open items
-Do these when the **final domain** is chosen (they depend on it):
-1. **Move the site to the domain** - DNS at the registrar -> server, change `DOMAIN`/`BASEURL` in the server's `.env`, `docker compose up -d` (`DEPLOY.md`, "Moving to ...").
-2. **Email** - plan: Namecheap Private Email, one mailbox `hello@pdxfusiondance.com`, which forwards to every admin. Gancio sends as hello@ over
-   SMTP (`mail.privateemail.com`, port 465, SSL, full address + password). Admin -> E-mail (SMTP) and admin email = hello@ (today NEITHER is set).
-   About page address is already changed in `design/about.html`; the LIVE About text must be edited in Admin. Not yet bought or set up.
-3. **Publish the code (AGPL-3.0 requires it)** - GitHub account `clyobuilds`, two public repositories (site files; Gancio source with our changes, linked as a
-   submodule); `CONTRIBUTING.md` and `LICENSE` are written. Check `git log --all` shows only the no-reply identity first. Then add a footer
-   "Source code" link on the site (Admin -> Settings -> footer links; none are set today) pointing to the repository, and mention the repository in the
-   About page. Not published yet; the user said to wait for the final domain.
-4. **Launch switch** - set `INDEXING=index` in the server's `.env` only at the hard launch (it is `noindex` now), then follow the SEO checklist in `DEPLOY.md`.
+Done (2026-10-09): domain moved to https://pdxfusiondance.com (HTTPS by Caddy); email (hello@ via Namecheap Private Email, SMTP
+working); backup cron on the server (03:15 UTC) plus a daily copy to the Mac (launchd, 09:30 local, `~/pdxfusion-live-backups/`);
+code published (github.com/clyobuilds/pdx-fusion and /gancio-pdxfusion, AGPL source link in the footer); INDEXING=index (launch).
 
-Independent of the domain:
-- **Backups** - there is NO scheduled backup on the server (only manual `./backup.sh` runs). Add the daily cron from `DEPLOY.md` step 9 and copy archives off the
-  server now and then.
-- **Organizer accounts** - the site has only the one admin account. Add trusted organizers as editors (Admin -> Users) so they can approve submitted events and
-  edit them (events wait for approval until someone does; without email notifications nobody is told).
-- **Login protection** - /login is public and Gancio does not limit wrong passwords: use strong unique passwords; consider rate limiting at Caddy/Cloudflare at launch.
-- **Event types on old events** - events created before the Event type field have none; they only show under "All" until edited.
-- **Inspire Fusion** (live, Oct 17) was created by mistake as a weekly series (25 extra dates). Fix: edit the series and set "Ends on a date" to Oct 17,
-  or copy it as a single event and remove the series. Waiting on the owner's decision.
-- **Two live settings differ from local** (`allow_event_without_end_time`, `show_download_media`; live = off, local = Gancio default on). Decide which is wanted.
-- **Report to the Gancio project** (also in `UPSTREAM.md`): searching events with both a text query and a result limit (`max`) fails with a server error.
-- **Ideas not built:** keeping the flyer when copying an event; showing the cost on cards.
+Still open:
+1. **www** - add a DNS CNAME `www` -> `pdxfusiondance.com.` at Namecheap. Caddy then redirects www to the bare domain (already in the Caddyfile).
+2. **Search Console + Bing Webmaster Tools** - verify the domain (DNS TXT record, done by the owner) and submit `/sitemap.xml`.
+3. **Three live settings differ from local** (`design/audit.py`): `allow_event_without_end_time`, `show_download_media`, `enable_report` (live on). Decide which is wanted.
+4. **Admin notifications** - add each new admin/editor with Notify ticked; hello@ mail reaches people only through Namecheap forwarding (manual).
+5. **Inspire Fusion** (weekly series by mistake) - waiting on the owner's decision.
 
 ## Known behaviors worth remembering
 - Repeating events are created 4 months ahead; a skipped date stays skipped; "Remove" under "Recurring event actions" deletes the whole series.
