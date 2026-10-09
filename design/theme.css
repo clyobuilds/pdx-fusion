@@ -61,17 +61,24 @@ nav#AppBar,
 }
 /* hide the stock Gancio logo (this is not a Gancio-branded site) */
 nav#AppBar .v-btn:has(img[src="/logo.png"]) { display: none; }
-/* the site name is the neon logo picture (design/header-title.webp, embedded by apply.py); the text stays in the
+/* the site name is the neon words picture (design/header-title.webp, embedded by apply.py); the text stays in the
    page for search engines and screen readers, only hidden on screen */
 #title {
   display: block;
-  width: min(88vw, 620px);
-  aspect-ratio: 1200 / 567;
+  width: min(86vw, 880px);
+  aspect-ratio: /*HEADER_ASPECT*/;
   margin: 0 auto;
   background: url(/*HEADER_IMAGE*/) center / contain no-repeat;
   text-indent: -9999px;
   overflow: hidden;
   white-space: nowrap;
+}
+/* light theme: the pale letters need a dark panel behind them (a panel, not a border) */
+.v-theme--light #title {
+  background-color: #1c1616;
+  border-radius: 14px;
+  box-shadow: 0 0 0 16px #1c1616;   /* the dark margin around the words, without shrinking them */
+  margin: 16px auto;
 }
 nav#AppBar .text-body-1 { font-size: 1.05rem !important; opacity: 0.9; }
 

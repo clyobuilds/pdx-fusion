@@ -101,10 +101,15 @@ def header_image() -> str:
     return f"data:image/webp;base64,{data}"
 
 
+def header_aspect() -> str:
+    """Width / height of the site name picture (written by design/make_header.py)."""
+    return (DESIGN / "header-title.aspect").read_text().strip()
+
+
 def main():
     if not DB.exists():
         raise SystemExit("No database yet. Start the site once first (docker-compose up -d), then run this again.")
-    css = (DESIGN / "functional.css").read_text() + "\n" + (DESIGN / "theme.css").read_text().replace("/*FONTS*/", font_faces()).replace("/*HEADER_IMAGE*/", header_image())
+    css = (DESIGN / "functional.css").read_text() + "\n" + (DESIGN / "theme.css").read_text().replace("/*FONTS*/", font_faces()).replace("/*HEADER_IMAGE*/", header_image()).replace("/*HEADER_ASPECT*/", header_aspect())
     settings = {
         "custom_css": css,
         "custom_js": (DESIGN / "functional.js").read_text(),

@@ -3,11 +3,10 @@
 
     python3 design/make_header.py    (needs Pillow: pip3 install pillow)
 
-The logo says "PDX FUSION / DANCE.COM / COMMUNITY CALENDAR". The header needs only "PDX FUSION" over "DANCE"
-(no ".COM", no "community calendar" line, since the page already shows its subtitle). This script:
-  1. clears the words and the small line from the logo, keeping its neon frame and background
-  2. redraws the two lines with the same pale letters and red glow, and centers "DANCE" under "PDX FUSION"
-Output: design/header-title.webp (the frame included, so it looks like the logo).
+The logo says "PDX FUSION / DANCE.COM / COMMUNITY CALENDAR". The header needs "PDX FUSION DANCE" on one line,
+with no frame, no ".COM" and no "community calendar" line (the page shows its subtitle). This script cuts the two
+words out of the logo and sets them on one line with the same pale letters and red glow, on a transparent background.
+Output: design/header-title.webp
 """
 from pathlib import Path
 
@@ -35,49 +34,46 @@ def letter_mask(img, box):
     return green.point(lambda g: max(0, min(255, int((g - 60) * 255 / 170))))
 
 
+def tight(mask):
+    """The mask cut down to the letters themselves."""
+    return mask.crop(mask.point(lambda v: 255 if v > 128 else 0).getbbox())
+
+
 def main():
     logo = Image.open(SRC).convert("RGB")
 
-    line1 = letter_mask(logo, LINE1)
-    line2 = letter_mask(logo, LINE2)
-    # "DANCE" moves right so its center matches "PDX FUSION" (the logo centered "DANCE.COM", so this is the same center)
-    def center_x(mask):
-        bbox = mask.point(lambda v: 255 if v > 128 else 0).getbbox()
-        return (bbox[0] + bbox[2]) / 2, bbox
-    c1, _ = center_x(line1)
-    c2, _ = center_x(line2)
-    dx = round(c1 - c2)
+    # the two words, cut out of the logo: "PDX FUSION" and "DANCE" (".COM" and the small line are left out)
+    pdx = tight(letter_mask(logo, LINE1))
+    dance = tight(letter_mask(logo, LINE2))
 
-    # the full text layer, with DANCE moved
-    # the two lines move down a little, so they sit in the middle of the frame (the logo's small line was below them)
-    dy = 60
-    words = Image.new("L", logo.size, 0)
-    words.paste(line1, (LINE1[0], LINE1[1] + dy))
-    words.paste(line2, (LINE2[0] + dx, LINE2[1] + dy))
+    # one line: PDX FUSION, a word space, DANCE; the letters keep their height (they are the same size in the logo)
+    gap = round(pdx.height * 0.45)
+    width = pdx.width + gap + dance.width
+    top = max(pdx.height, dance.height)
+    words = Image.new("L", (width, top), 0)
+    words.paste(pdx, (0, 0))
+    words.paste(dance, (pdx.width + gap, 0))
 
-    # clear the old words and the small line, then paint the flat background there
-    out = logo.copy()
-    # inside CLEAR, every pixel that is not the flat background becomes background (letters and their glow);
-    # the rest of the logo (the frame, the flat background) is left as it is, so no lines show at the edges
-    diff = ImageChops.difference(out.crop(CLEAR), Image.new("RGB", (CLEAR[2] - CLEAR[0], CLEAR[3] - CLEAR[1]), BG))
-    changed = diff.convert("L").point(lambda v: 255 if v > 0 else 0)
-    out.paste(Image.new("RGB", changed.size, BG), CLEAR, changed)
+    # the red glow (a wide soft halo and a tighter one) behind the pale letters
+    pad = 90
+    canvas = (width + 2 * pad, top + 2 * pad)
+    layer = Image.new("L", canvas, 0)
+    layer.paste(words, (pad, pad))
+    halo = layer.filter(ImageFilter.GaussianBlur(26)).point(lambda v: min(255, int(v * 1.6 * 0.7)))
+    close = layer.filter(ImageFilter.GaussianBlur(7)).point(lambda v: min(255, int(v * 1.2 * 0.6)))
+    glow_alpha = ImageChops.lighter(halo, close)
+    glow = Image.new("RGBA", canvas, GLOW + (0,))
+    glow.putalpha(glow_alpha)
+    letters = Image.new("RGBA", canvas, FILL + (0,))
+    letters.putalpha(layer)
 
-    # red glow: a wide soft halo and a tighter one, behind the letters
-    halo = words.filter(ImageFilter.GaussianBlur(26)).point(lambda v: min(255, int(v * 1.6)))
-    close = words.filter(ImageFilter.GaussianBlur(7)).point(lambda v: min(255, int(v * 1.2)))
-    glow_layer = Image.new("RGB", logo.size, GLOW)
-    out.paste(glow_layer, (0, 0), ImageChops.lighter(halo.point(lambda v: v * 0.7), close.point(lambda v: v * 0.6)))
-
-    # pale letters on top
-    fill_layer = Image.new("RGB", logo.size, FILL)
-    out.paste(fill_layer, (0, 0), words)
-
-    out = out.crop(FRAME_CROP)
-    # 1200 px wide is plenty for a header (shown at about 600 px, so it stays sharp on phones)
+    out = Image.alpha_composite(glow, letters)
+    # cut to the words plus the glow, then scale to 1200 px wide (shown at about 600 px, sharp on phones)
+    out = out.crop(out.getbbox())
     out = out.resize((1200, round(out.height * 1200 / out.width)), Image.LANCZOS)
-    out.save(OUT, quality=90, method=6)
-    print(f"wrote {OUT} ({out.width}x{out.height}), DANCE moved {dx} px")
+    out.save(OUT, quality=92, method=6)
+    (DESIGN / "header-title.aspect").write_text(f"{out.width} / {out.height}\n")  # read by apply.py (no Pillow needed there)
+    print(f"wrote {OUT} ({out.width}x{out.height}, one line, transparent)")
 
 
 if __name__ == "__main__":
