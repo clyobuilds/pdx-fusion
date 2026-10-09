@@ -35,6 +35,20 @@ Still open:
 4. **Admin notifications** - add each new admin/editor with Notify ticked; hello@ mail reaches people only through Namecheap forwarding (manual).
 5. **Inspire Fusion** (weekly series by mistake) - waiting on the owner's decision.
 
+## Planned: new ways to log in (not started, nothing built)
+Decided to plan these before building. Build the first one only when the user says so.
+1. **Email code login (first):** a 6-digit code emailed to the user, entered on `/login`; no password needed. Expires in about 15 minutes,
+   one use only, rate limited. Passwords stay as a fallback until everyone has used the email code once. Difficulty: moderate, about a day
+   with testing. Reuses the existing mail setup (hello@) and the password-reset pattern (`recover_code`).
+2. **Passkeys (fingerprint, face or device PIN), later:** feasible with a standard library; moderate to high difficulty. A passkey is tied to the
+   domain name, so if the domain changes, passkeys must be set up again. Users still need the email code as their way back in.
+3. **Bluesky sign-in (optional, later):** feasible, moderate to high difficulty. Bluesky uses OAuth (PKCE, PAR, DPoP). Needs a client
+   metadata document published at a public URL on our domain, and a maintained OAuth library rather than custom code. The Bluesky guide:
+   https://docs.bsky.app/docs/advanced-guides/oauth-client
+
+Adding an admin today: Admin -> Users -> new user (email, role admin). They get a "user_confirm" email with a link to choose a password,
+then log in at /login. (Test once with a real address before relying on it.)
+
 ## Known behaviors worth remembering
 - Repeating events are created 4 months ahead; a skipped date stays skipped; "Remove" under "Recurring event actions" deletes the whole series.
 - Favorites are stored in the visitor's browser only.
