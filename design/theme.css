@@ -163,7 +163,7 @@ nav#AppBar::after {
 #home .event-card .img.thumb img { width: 100% !important; height: 100% !important; max-height: none !important; object-fit: cover; }
 #home .event-card .event-title {
   grid-area: title;
-  margin: 0 48px 4px 0 !important;
+  margin: 0 96px 4px 0 !important;   /* clear of the star and share buttons (about 92 px on the right) */
   font-size: 1.2rem !important;
   line-height: 1.25 !important;
   -webkit-line-clamp: 2 !important; line-clamp: 2 !important;
